@@ -33,8 +33,9 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
   // Propiedad que hace referencia al mapa
   mapa!: mapboxgl.Map
 
-  constructor() { }
+  zoomLevel: number = 16
 
+  constructor() { }
 
   ngAfterViewInit(): void {
     // Inicializar MapBox, tomando como referencia la variable de plantilla asociada con el visor de mapa (#variableTemplate)
@@ -43,7 +44,7 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
       style: 'mapbox://styles/mapbox/streets-v11',
       // Mapbox acepta coordenadas en lat, long (Google maps es al revés)
       center: [-99.19097770198496, 19.433701491408804],
-      zoom: 16,
+      zoom: this.zoomLevel,
     });
   }
 
@@ -62,11 +63,13 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
   zoomIn() {
     // Incrementar zoom
     this.mapa.zoomIn()
+    this.zoomLevel = this.mapa.getZoom()
   }
 
   zoomOut() {
     // Alejar zoom
     this.mapa.zoomOut()
+    this.zoomLevel = this.mapa.getZoom()
   }
 
 }
