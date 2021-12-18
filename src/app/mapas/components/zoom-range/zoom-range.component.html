@@ -1,5 +1,8 @@
 <!-- Visor de mapa -->
-<div id="mapa"></div>
+<!-- En lugar de ID se recomienda colocarle una variable de plantilla para identificar el componente.
+Esto es util en ángular si deseamos crear un componente para el visor de mapas. Ya que al tener muchos de estos componentes
+dentro de la vista, Angular les colocará un ID DINÁMICO, con el simple hecho de tener una referencia de plantilla -->
+<div #mapa class="visor-mapa"></div>
 
 <!-- Controles con información y gestión de zoom -->
 <div class="row controles">
@@ -12,7 +15,7 @@
     <input type="range" class="form-range" id="customRange1">
   </div>
   <div class="col-12 d-flex justify-content-between">
-    <button class="btn btn-primary"> - </button>
-    <button class="btn btn-primary"> + </button>
+    <button class="btn btn-primary" (click)="zoomOut()"> - </button>
+    <button class="btn btn-primary" (click)="zoomIn()"> + </button>
   </div>
 </div>
