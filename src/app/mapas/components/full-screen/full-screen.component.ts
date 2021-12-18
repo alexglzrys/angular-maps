@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from "mapbox-gl";  // importa toda la librería (*) y asociala con el nombre de mapboxlg (Se hace cuando la librería no exporta un módulo)
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-full-screen',
@@ -26,11 +25,17 @@ export class FullScreenComponent implements OnInit {
 
   ngOnInit(): void {
     // Incializar MapBox
-    (mapboxgl as any).accessToken = environment.mapboxToken;
+
+    // Especificar token de forma local (solo para usar dentro de este componente)
+    //(mapboxgl as any).accessToken = environment.mapboxToken;
+
     // Indicar en que elemento (id) se proyectará el contenido del mapa
     let map = new mapboxgl.Map({
       container: 'mapa',
-      style: 'mapbox://styles/mapbox/streets-v11'
+      style: 'mapbox://styles/mapbox/streets-v11',
+      // Mapbox acepta coordenadas en lat, long (Google maps es al revés)
+      center: [-99.19097770198496, 19.433701491408804],
+      zoom: 16,
     });
   }
 
