@@ -7,7 +7,7 @@
   <li *ngFor="let marcador of marcadores; let i = index;"
       class="list-group-item"
       [ngStyle]="{'background-color': marcador.color}"
-      (click)="goToMarker(marcador.marker.getLngLat())">Marcador {{ i + 1 }}</li>
+      (click)="goToMarker(marcador.marker!.getLngLat())">Marcador {{ i + 1 }}</li>
 </ul>
 
 <div #mapa class="visor-mapa"></div>

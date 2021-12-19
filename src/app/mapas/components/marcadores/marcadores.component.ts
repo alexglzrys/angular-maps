@@ -48,6 +48,9 @@ export class MarcadoresComponent implements AfterViewInit {
       zoom: this.zoomLevel,
     })
 
+    // Si hay marcadores en LocalStorage, es necesario reconstruirlos para mostrarlos en el mapa
+    this.obtenerListadoMarcadoresEnLocalStorage();
+
     // Se puede personalizar el contenido del marcador de posición en el mapa, por cualquier contenido HTML/CSS elaborado
     const markerHTML: HTMLElement = document.createElement('div');
     markerHTML.innerHTML = 'Hola mundo soy el marcador';
@@ -73,6 +76,9 @@ export class MarcadoresComponent implements AfterViewInit {
       color: color,
       marker: nuevoMarcador
     });
+
+    // Guardar en localStorage
+    this.guardarListadoMarcadoresEnLocalStorage();
   }
 
   // Mover el mapa a las coordenadas especificadas (estas se corresponden con las coordedanas de cada marcador)
@@ -80,6 +86,49 @@ export class MarcadoresComponent implements AfterViewInit {
     //console.log(coords)
     this.mapa.flyTo({
       center: coordsMarker
+    })
+  }
+
+  guardarListadoMarcadoresEnLocalStorage() {
+    // Solo se puede almacenar strings, o arreglos u objetos serializados
+    let lngLatArr: MarcadorColor[] = []
+    // Recorro toda la lista de marcadores para proceder a generar el arreglo que se almacenará en localStorage
+    this.marcadores.forEach(marcador => {
+
+      const color = marcador.color
+      // ! es para decirle a TS que confie en mi (siempre va a venir ese valor), ? decirle a TS que puede o no que venga o existe ese valor
+      const { lat, lng } = marcador.marker!.getLngLat()
+
+      lngLatArr.push({
+        color,
+        center: [lng, lat]
+      });
+
+      // Guardar en LS, la serialización de mi arreglo de maracadores
+      localStorage.setItem('marcadores', JSON.stringify(lngLatArr));
+    })
+  }
+
+  obtenerListadoMarcadoresEnLocalStorage() {
+    // Verificar si existen marcadores almacenados en LS
+    if (!localStorage.getItem('marcadores')) return;
+
+    // Recurparar el listado de marcadores (deserializar el arreglo guardado como string)
+    // Es importante especificar que siempre va a existir un valor que viene desde LS, (!)
+    const lngLatArr: MarcadorColor[] = JSON.parse(localStorage.getItem('marcadores')!);
+
+    // Iterar el arreglo y reconstruir nuevamente los marcadores dentro del mapa
+    lngLatArr.forEach(m => {
+      const newMarker = new mapboxgl.Marker({
+        color: m.color,
+        draggable: true
+      }).setLngLat(m.center!).addTo(this.mapa)
+
+      // Asociar estos marcadores reconstruidos a partir de LS, con mi listado original de marcadores
+      this.marcadores.push({
+        color: m.color,
+        marker: newMarker
+      });
     })
   }
 
