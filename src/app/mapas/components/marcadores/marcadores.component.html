@@ -1,6 +1,10 @@
 <ul class="list-group">
   <li class="list-group-item list-group-item-info" (click)="agregarMarcador()">+ Agregar marcador</li>
 
+  <!-- Generar un elemento de lista por cada marcador agregado de forma dinámica -->
+  <li *ngFor="let marcador of marcadores; let i = index;"
+      class="list-group-item"
+      [ngStyle]="{'background-color': marcador.color}">Marcador {{ i + 1 }}</li>
 </ul>
 
 <div #mapa class="visor-mapa"></div>

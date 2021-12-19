@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import { MarcadorColor } from 'src/app/shared/interfaces/marcador-color';
 
 @Component({
   selector: 'app-marcadores',
@@ -31,6 +32,9 @@ export class MarcadoresComponent implements AfterViewInit {
   zoomLevel: number = 15;
   centerCoords: [number, number] = [-99.19097770198496, 19.433701491408804];
 
+  // Listado de marcadores agregados de forma dinámica
+  marcadores: MarcadorColor[] = [];
+
   constructor() { }
 
   ngAfterViewInit(): void {
@@ -57,13 +61,24 @@ export class MarcadoresComponent implements AfterViewInit {
 
   // Agregar marcadores de forma dinámica en el mapa
   agregarMarcador() {
+    const color:string = this.generarColorHex()
     const nuevoMarcador = new mapboxgl.Marker({
       draggable: true,
-      color: this.generarColorHex()
+      color
     }).setLngLat(this.centerCoords).addTo(this.mapa)
+
+    // Agregar el nuevo marcador al listado de marcadores, hacemos uso de la interfaz MarcadorColor para conservar el color del marcador y asociarlo con su respectivo elemento de lista
+    this.marcadores.push({
+      color: color,
+      marker: nuevoMarcador
+    });
   }
 
   generarColorHex() {
+
+    // Una forma más rápida para generar un color hexadecimal sin hacer uso de una función
+    // const coloresHex = "#xxxxxx".replace(/x/g, y=>(Math.random()*16|0).toString(16));
+
     const simbolos: string = '0123456789ABCDEF';
     let color: string = '#';
     for(let i = 0; i < 6; i++) {
