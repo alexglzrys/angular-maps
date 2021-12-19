@@ -10,7 +10,7 @@ dentro de la vista, Angular les colocará un ID DINÁMICO, con el simple hecho d
     <label class="form-label">
       Zoom: {{ zoomLevel | number: '1.2-2' }}
       <br>
-      Latitud: 45454 - Longitud: 4454
+      Latitud: {{ centerCoords[0] | number: '2.4-4' }} - Longitud: {{ centerCoords[1] | number: '2.4-4' }}
     </label>
     <!-- Al tratarse se un solo control de formulario, no hay necesidad de trabajar con la metodogía de formularios basados en template o reactivos
     Para ello solo se identifica con una variable de template

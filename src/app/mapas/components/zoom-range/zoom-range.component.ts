@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as mapboxgl from "mapbox-gl";
 @Component({
   selector: 'app-zoom-range',
@@ -25,7 +25,7 @@ import * as mapboxgl from "mapbox-gl";
     `
   ]
 })
-export class ZoomRangeComponent implements OnInit, AfterViewInit {
+export class ZoomRangeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Hacer referencia al elemento visor del mapa
   @ViewChild('mapa') mapaDiv!: ElementRef;
@@ -33,9 +33,18 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
   // Propiedad que hace referencia al mapa
   mapa!: mapboxgl.Map
 
-  zoomLevel: number = 16
+  zoomLevel: number = 16;
+  centerCoords: [number, number] = [-99.19097770198496, 19.433701491408804];
 
   constructor() { }
+
+  // Realizar limpieza en el mapa antes de destruir el componente
+  ngOnDestroy(): void {
+    // Es importante apagar cada uno de los listener registrados, internamente puedo hacer tareas adicionales en su función asociada.
+    this.mapa.off('zoom', () => {});
+    this.mapa.off('zoomend', () => {})
+    this.mapa.off('move', () => {})
+  }
 
   ngAfterViewInit(): void {
     // Inicializar MapBox, tomando como referencia la variable de plantilla asociada con el visor de mapa (#variableTemplate)
@@ -43,14 +52,14 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
       container: this.mapaDiv.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v11',
       // Mapbox acepta coordenadas en lat, long (Google maps es al revés)
-      center: [-99.19097770198496, 19.433701491408804],
+      center: this.centerCoords,
       zoom: this.zoomLevel,
     });
 
     // Listener para escuchar cambios en el mapa
     this.mapa.on('zoom', (event) => {
       // El evento de zoom se puede dar por diversas acciones del usuario (Mouse, Touch, Wheel)
-      console.log(event)
+      // console.log(event)
       this.zoomLevel = this.mapa.getZoom()
     })
 
@@ -60,6 +69,16 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
       if (this.zoomLevel > 18) {
         this.mapa.zoomTo(18)
       }
+    })
+
+    // Listener para escuchar el movimeinto del mapa y obtner su nuevas coordenadas en el centro
+    this.mapa.on('move', (event) => {
+      //console.log(event);
+      // La propiedad target contiene toda la información del evento en el mapa
+      let target = event.target;
+      // Obtener el nuevo centro del mapa (coordenadas)
+      const { lat, lng } = target.getCenter()
+      this.centerCoords = [ lat, lng ];
     })
   }
 
