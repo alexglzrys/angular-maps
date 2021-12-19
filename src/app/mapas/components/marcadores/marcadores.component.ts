@@ -21,6 +21,7 @@ import { MarcadorColor } from 'src/app/shared/interfaces/marcador-color';
       right: 20px;
       top: 20px;
       z-index: 100;
+      cursor: pointer;
     }
     `
   ]
@@ -72,6 +73,14 @@ export class MarcadoresComponent implements AfterViewInit {
       color: color,
       marker: nuevoMarcador
     });
+  }
+
+  // Mover el mapa a las coordenadas especificadas (estas se corresponden con las coordedanas de cada marcador)
+  goToMarker(coordsMarker: mapboxgl.LngLat) {
+    //console.log(coords)
+    this.mapa.flyTo({
+      center: coordsMarker
+    })
   }
 
   generarColorHex() {

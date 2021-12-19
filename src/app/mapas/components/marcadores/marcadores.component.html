@@ -1,10 +1,13 @@
 <ul class="list-group">
   <li class="list-group-item list-group-item-info" (click)="agregarMarcador()">+ Agregar marcador</li>
 
-  <!-- Generar un elemento de lista por cada marcador agregado de forma dinámica -->
+  <!-- Generar un elemento de lista por cada marcador agregado de forma dinámica
+  Se establece el mismo color del marcador
+  Al hacer clic movemos el mapa a las coordenadas corresondientes de ese marcador -->
   <li *ngFor="let marcador of marcadores; let i = index;"
       class="list-group-item"
-      [ngStyle]="{'background-color': marcador.color}">Marcador {{ i + 1 }}</li>
+      [ngStyle]="{'background-color': marcador.color}"
+      (click)="goToMarker(marcador.marker.getLngLat())">Marcador {{ i + 1 }}</li>
 </ul>
 
 <div #mapa class="visor-mapa"></div>
