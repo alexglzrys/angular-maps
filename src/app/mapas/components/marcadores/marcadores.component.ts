@@ -14,6 +14,13 @@ import * as mapboxgl from 'mapbox-gl';
         top: 0;
         bottom: 0;
       }
+
+    .list-group {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      z-index: 100;
+    }
     `
   ]
 })
@@ -40,11 +47,30 @@ export class MarcadoresComponent implements AfterViewInit {
     const markerHTML: HTMLElement = document.createElement('div');
     markerHTML.innerHTML = 'Hola mundo soy el marcador';
 
-    // Establecer el primer marcador en el mapa
+    // Establecer el primer marcador en el mapa (forma estática)
     let marker = new mapboxgl.Marker({
       //element: markerHTML
+      draggable: true,
     }).setLngLat(this.centerCoords)
       .addTo(this.mapa);
   }
+
+  // Agregar marcadores de forma dinámica en el mapa
+  agregarMarcador() {
+    const nuevoMarcador = new mapboxgl.Marker({
+      draggable: true,
+      color: this.generarColorHex()
+    }).setLngLat(this.centerCoords).addTo(this.mapa)
+  }
+
+  generarColorHex() {
+    const simbolos: string = '0123456789ABCDEF';
+    let color: string = '#';
+    for(let i = 0; i < 6; i++) {
+      color = color + simbolos[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
 
 }
