@@ -12,7 +12,14 @@ dentro de la vista, Angular les colocará un ID DINÁMICO, con el simple hecho d
       <br>
       Latitud: 45454 - Longitud: 4454
     </label>
-    <input type="range" class="form-range" id="customRange1">
+    <!-- Al tratarse se un solo control de formulario, no hay necesidad de trabajar con la metodogía de formularios basados en template o reactivos
+    Para ello solo se identifica con una variable de template
+    Se hace un binding de su valor a una propiedad declarada en la clase
+    Se escucha su cambio de valor mediante el evento input, pasando el valor actual registrado en el control
+    Internamente en la función, se hacen las tareas correspondientes
+
+    Se hizo de esta forma por que me interesa estar atento al cambio de valor del control para actualizar el zoom del mapa -->
+    <input #zoomInput type="range" [value]="zoomLevel" (input)="cambioValorZoom(zoomInput.value)" min="0" max="18" class="form-range">
   </div>
   <div class="col-12 d-flex justify-content-between">
     <button class="btn btn-primary" (click)="zoomOut()"> - </button>

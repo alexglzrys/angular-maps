@@ -53,6 +53,14 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
       console.log(event)
       this.zoomLevel = this.mapa.getZoom()
     })
+
+    // Listener para escuchar cuando finaliza el zoom
+    this.mapa.on('zoomend', (event) => {
+      // No permitir establecer un zoom mayor a 18
+      if (this.zoomLevel > 18) {
+        this.mapa.zoomTo(18)
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -75,6 +83,11 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
   zoomOut() {
     // Alejar zoom
     this.mapa.zoomOut()
+  }
+
+  // El valor del control range cambio, por tanto actualizo el zoom en el mapa
+  cambioValorZoom(value: string) {
+    this.mapa.zoomTo(Number(value))
   }
 
 }
