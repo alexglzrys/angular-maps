@@ -1,14 +1,13 @@
-<div class="row ">
-  <div class="col-2">
-
-  </div>
+<div class="row m-0">
+  <div class="col-2"></div>
   <div class="col-10">
     <h1 class="mt-3">Lista de Propiedades</h1>
     <hr>
     <div class="row mt-4">
-      <div *ngFor="let propiedad of propiedades" class="col-md-4">
+      <div *ngFor="let propiedad of propiedades" class="col-4">
         <div class="card mb-4">
-          <img class="card-img-top" src="..." alt="Card image cap">
+          <!-- Pintar el mapa correspondiente al titulo de propiedad que viene en la data -->
+          <app-mini-mapa [centerCoords]="propiedad.lngLat" class="card-img-top"></app-mini-mapa>
           <div class="card-body">
             <h5 class="card-title">{{ propiedad.titulo }}</h5>
             <p class="card-text">{{ propiedad.descripcion }}</p>

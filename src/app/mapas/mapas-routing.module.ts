@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FullScreenComponent } from './components/full-screen/full-screen.component';
-import { MarcadoresComponent } from './components/marcadores/marcadores.component';
-import { PropiedadesComponent } from './components/propiedades/propiedades.component';
-import { ZoomRangeComponent } from './components/zoom-range/zoom-range.component';
+import { FullScreenComponent } from './pages/full-screen/full-screen.component';
+import { MarcadoresComponent } from './pages/marcadores/marcadores.component';
+import { PropiedadesComponent } from './pages/propiedades/propiedades.component';
+import { ZoomRangeComponent } from './pages/zoom-range/zoom-range.component';
 
 const routes: Routes = [
   {
