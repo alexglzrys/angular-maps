@@ -46,6 +46,13 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
       center: [-99.19097770198496, 19.433701491408804],
       zoom: this.zoomLevel,
     });
+
+    // Listener para escuchar cambios en el mapa
+    this.mapa.on('zoom', (event) => {
+      // El evento de zoom se puede dar por diversas acciones del usuario (Mouse, Touch, Wheel)
+      console.log(event)
+      this.zoomLevel = this.mapa.getZoom()
+    })
   }
 
   ngOnInit(): void {
@@ -63,13 +70,11 @@ export class ZoomRangeComponent implements OnInit, AfterViewInit {
   zoomIn() {
     // Incrementar zoom
     this.mapa.zoomIn()
-    this.zoomLevel = this.mapa.getZoom()
   }
 
   zoomOut() {
     // Alejar zoom
     this.mapa.zoomOut()
-    this.zoomLevel = this.mapa.getZoom()
   }
 
 }
