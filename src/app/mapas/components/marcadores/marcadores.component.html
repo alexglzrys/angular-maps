@@ -3,9 +3,11 @@
 
   <!-- Generar un elemento de lista por cada marcador agregado de forma dinámica
   Se establece el mismo color del marcador
-  Al hacer clic movemos el mapa a las coordenadas corresondientes de ese marcador -->
+  Al hacer clic movemos el mapa a las coordenadas corresondientes de ese marcador
+  Con doble clic se elimina el marcador asociado -->
   <li *ngFor="let marcador of marcadores; let i = index;"
       class="list-group-item"
+      (dblclick)="eliminarMarcador(i)"
       [ngStyle]="{'background-color': marcador.color}"
       (click)="goToMarker(marcador.marker!.getLngLat())">Marcador {{ i + 1 }}</li>
 </ul>

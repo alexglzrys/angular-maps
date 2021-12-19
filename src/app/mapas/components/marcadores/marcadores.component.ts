@@ -71,6 +71,12 @@ export class MarcadoresComponent implements AfterViewInit {
       color
     }).setLngLat(this.centerCoords).addTo(this.mapa)
 
+    // Escuchar listener "dragend" del nuevo marcador para saber cuando se terminó de mover (se arrastró a una nueva posición)
+    nuevoMarcador.on('dragend', () => {
+      // Guardar la nueva posición en la data del LS
+      this.guardarListadoMarcadoresEnLocalStorage();
+    })
+
     // Agregar el nuevo marcador al listado de marcadores, hacemos uso de la interfaz MarcadorColor para conservar el color del marcador y asociarlo con su respectivo elemento de lista
     this.marcadores.push({
       color: color,
@@ -87,6 +93,16 @@ export class MarcadoresComponent implements AfterViewInit {
     this.mapa.flyTo({
       center: coordsMarker
     })
+  }
+
+  eliminarMarcador(index: number) {
+    // Eliminar el marcador que se encuentra en la posición indicada dentro del listado de marcadores
+    this.marcadores[index].marker?.remove();
+
+    // Eliminar esa posición dentro del arreglo
+    this.marcadores.splice(index, 1);
+    // Actualizar el registro de marcadores en LocalStorage
+    this.guardarListadoMarcadoresEnLocalStorage();
   }
 
   guardarListadoMarcadoresEnLocalStorage() {
@@ -123,6 +139,12 @@ export class MarcadoresComponent implements AfterViewInit {
         color: m.color,
         draggable: true
       }).setLngLat(m.center!).addTo(this.mapa)
+
+      // Escuchar el listener "dragend" de este nuevo marcador dibujado para saber cuando se mueve de posicón
+      newMarker.on('dragend', () => {
+        // Grabar la nueva posicIón en LocalStorage
+        this.guardarListadoMarcadoresEnLocalStorage();
+      })
 
       // Asociar estos marcadores reconstruidos a partir de LS, con mi listado original de marcadores
       this.marcadores.push({
